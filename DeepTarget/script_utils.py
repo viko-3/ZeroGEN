@@ -107,7 +107,7 @@ def read_smiles_csv(path):
                           usecols=['mol_idx'],
                           squeeze=True).astype(int).tolist()
     prot_idx = pd.read_csv(path,
-                           usecols=['prot_idx'],
+                           usecols=['cluster_id'],
                            squeeze=True).astype(int).tolist()
     return mol, prot, mol_idx, prot_idx
 

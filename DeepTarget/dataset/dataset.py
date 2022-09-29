@@ -34,7 +34,7 @@ def get_dataset(split='train'):
         smiles, smiles_idx = None, None
     try:
         proteins = pd.read_csv(path, compression='gzip')['protein'].values
-        proteins_idx = pd.read_csv(path, compression='gzip')['prot_idx'].values
+        proteins_idx = pd.read_csv(path, compression='gzip')['cluster_id'].values
     except:
         proteins, proteins_idx = None, None
     return smiles, proteins, smiles_idx, proteins_idx
