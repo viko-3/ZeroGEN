@@ -1,6 +1,7 @@
 checkpoints/
 data/
 __pycache__/
+preprocess/prot_cluster/
 .ipynb_checkpoints
 .DS_Store
 .idea
