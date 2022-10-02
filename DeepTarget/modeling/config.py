@@ -34,12 +34,19 @@ def get_parser(parser=None):
                            help='Learning rate')
     train_arg.add_argument('--step_size', type=int, default=10,
                            help='Period of learning rate decay')
-    train_arg.add_argument('--gamma', type=float, default=0.5, 
+    train_arg.add_argument('--gamma', type=float, default=0.5,
                            help='Multiplicative factor of learning rate decay')
     train_arg.add_argument('--n_jobs', type=int, default=8,
                            help='Number of threads')
     train_arg.add_argument('--n_workers', type=int, default=1,
                            help='Number of workers for DataLoaders')
+
+    train_arg.add_argument('--bootstrap_path', type=str, default='data/bootstrap_res.csv',
+                           help='bootstrap_path')
+    train_arg.add_argument('--bootstrap_savepath', type=str, default='data/bootstrap_res.csv',
+                           help='bootstrap_savepath')
+    train_arg.add_argument('--bootstrap_threshold', type=float, default=0.8,
+                           help='bootstrap_threshold')
 
     return parser
 
