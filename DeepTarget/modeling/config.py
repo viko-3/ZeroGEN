@@ -41,12 +41,6 @@ def get_parser(parser=None):
     train_arg.add_argument('--n_workers', type=int, default=1,
                            help='Number of workers for DataLoaders')
 
-    train_arg.add_argument('--bootstrap_path', type=str, default='data/bootstrap_res.csv',
-                           help='bootstrap_path')
-    train_arg.add_argument('--bootstrap_savepath', type=str, default='data/bootstrap_res.csv',
-                           help='bootstrap_savepath')
-    train_arg.add_argument('--bootstrap_threshold', type=float, default=0.8,
-                           help='bootstrap_threshold')
 
     return parser
 
