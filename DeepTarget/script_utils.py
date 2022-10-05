@@ -112,6 +112,16 @@ def read_smiles_csv(path):
     return mol, prot, mol_idx, prot_idx
 
 
+def read_proteins_csv(path):
+    prot = pd.read_csv(path,
+                       usecols=['protein_seq'],
+                       squeeze=True).astype(str).tolist()
+    prot_idx = pd.read_csv(path,
+                           usecols=['prot_idx'],
+                           squeeze=True).astype(int).tolist()
+    return prot, prot_idx
+
+
 def set_seed(seed):
     torch.manual_seed(seed)
     torch.cuda.manual_seed_all(seed)
