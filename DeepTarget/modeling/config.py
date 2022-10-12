@@ -41,6 +41,13 @@ def get_parser(parser=None):
     train_arg.add_argument('--n_workers', type=int, default=1,
                            help='Number of workers for DataLoaders')
 
+    ###
+    # 不要改该参数，系统会自动分配
+    # train_arg.add_argument('--device', default='cuda', help='device id (i.e. 0 or 0,1 or cpu)')
+    # 开启的进程数(注意不是线程),不用设置该参数，会根据nproc_per_node自动设置
+    train_arg.add_argument('--world_size', default=4, type=int,
+                           help='number of distributed processes')
+    train_arg.add_argument('--dist_url', default='env://', help='url used to set up distributed training')
 
     return parser
 
