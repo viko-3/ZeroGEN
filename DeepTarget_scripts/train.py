@@ -46,11 +46,13 @@ def main(model, config):
     if config.train_load is None:
         train_data_smi, train_data_prot, train_data_mol_idx, train_data_prot_idx = get_dataset('train')
     else:
-        train_data_smi, train_data_prot, train_data_mol_idx, train_data_prot_idx = read_smiles_csv(config.train_load)
+        train_data_smi, train_data_prot, train_data_mol_idx, train_data_prot_idx, train_affinity_score = read_smiles_csv(
+            config.train_load)
     if config.val_load is None:
         val_data_smi, val_data_prot, val_data_mol_idx, val_data_prot_idx = get_dataset('test')
     else:
-        val_data_smi, val_data_prot, val_data_mol_idx, val_data_prot_idx = read_smiles_csv(config.val_load)
+        val_data_smi, val_data_prot, val_data_mol_idx, val_data_prot_idx, val_affinity_score = read_smiles_csv(
+            config.val_load)
     trainer = MODELS.get_model_trainer(model)(config)
 
     if config.vocab_load is not None:
@@ -63,8 +65,8 @@ def main(model, config):
     if config.vocab_save is not None:
         torch.save(vocab, config.vocab_save)
 
-    train_data = [train_data_smi, train_data_prot, train_data_mol_idx, train_data_prot_idx]
-    val_data = [val_data_smi, val_data_prot, val_data_mol_idx, val_data_prot_idx]
+    train_data = [train_data_smi, train_data_prot, train_data_mol_idx, train_data_prot_idx, train_affinity_score]
+    val_data = [val_data_smi, val_data_prot, val_data_mol_idx, val_data_prot_idx, val_affinity_score]
 
     model = MODELS.get_model_class(model)(vocab, config).to(device)
     # 这里注意，一定要指定map_location参数，否则会导致第一块GPU占用更多资源

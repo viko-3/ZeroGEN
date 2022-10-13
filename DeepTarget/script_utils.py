@@ -109,7 +109,10 @@ def read_smiles_csv(path):
     prot_idx = pd.read_csv(path,
                            usecols=['cluster_id'],
                            squeeze=True).astype(int).tolist()
-    return mol, prot, mol_idx, prot_idx
+    affinity_score = pd.read_csv(path,
+                                 usecols=['pKd_pKi_pIC50'],
+                                 squeeze=True).astype(float).tolist()
+    return mol, prot, mol_idx, prot_idx, affinity_score
 
 
 def read_proteins_csv(path):
