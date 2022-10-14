@@ -30,7 +30,7 @@ def get_parser(parser=None):
                            help='Number of epochs for model training')
     train_arg.add_argument('--n_batch', type=int, default=16,
                            help='Size of batch')
-    train_arg.add_argument('--lr', type=float, default=1e-3,
+    train_arg.add_argument('--lr', type=float, default=1e-4,
                            help='Learning rate')
     train_arg.add_argument('--step_size', type=int, default=10,
                            help='Period of learning rate decay')

@@ -97,22 +97,22 @@ def add_sample_args(parser):
 
 
 def read_smiles_csv(path):
-    mol = pd.read_csv(path,
-                      usecols=['SMILES'],
-                      squeeze=True).astype(str).tolist()
-    prot = pd.read_csv(path,
-                       usecols=['protein_seq'],
-                       squeeze=True).astype(str).tolist()
-    mol_idx = pd.read_csv(path,
-                          usecols=['mol_idx'],
-                          squeeze=True).astype(int).tolist()
-    prot_idx = pd.read_csv(path,
-                           usecols=['cluster_id'],
-                           squeeze=True).astype(int).tolist()
-    affinity_score = pd.read_csv(path,
-                                 usecols=['pKd_pKi_pIC50'],
-                                 squeeze=True).astype(float).tolist()
+    df = pd.read_csv(path)
+    mol = df['SMILES'].astype(str).tolist()
+    prot = df['protein_seq'].astype(str).tolist()
+    mol_idx = df['mol_idx'].astype(int).tolist()
+    prot_idx = df['cluster_id'].astype(int).tolist()
+    affinity_score = df['pKd_pKi_pIC50'].astype(float).tolist()
+
+    max_value, min_value = max(affinity_score), min(affinity_score)
+    affinity_score = df['pKd_pKi_pIC50'].apply(clamp_affinity_score, args=(max_value, min_value))
+
     return mol, prot, mol_idx, prot_idx, affinity_score
+
+
+def clamp_affinity_score(x, max_value, min_value):
+    clamp_value = (x - min_value) / (max_value - min_value)
+    return clamp_value
 
 
 def read_proteins_csv(path):
