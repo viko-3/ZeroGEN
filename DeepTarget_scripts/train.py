@@ -33,9 +33,10 @@ def main(model, config):
     set_seed(config.seed)
     device = torch.device(config.device)
     ###
-    init_distributed_mode(args=config)
-    rank = config.rank
-    config.lr *= config.world_size  # 学习率要根据并行GPU的数量进行倍增
+    if config.multi_gpu:
+        init_distributed_mode(args=config)
+        rank = config.rank
+        config.lr *= config.world_size  # 学习率要根据并行GPU的数量进行倍增
 
     if config.config_save is not None:
         torch.save(config, config.config_save)
@@ -70,15 +71,16 @@ def main(model, config):
 
     model = MODELS.get_model_class(model)(vocab, config).to(device)
     # 这里注意，一定要指定map_location参数，否则会导致第一块GPU占用更多资源
-    if rank == 0:
+    if config.multi_gpu and rank == 0:
         torch.save(model.state_dict(), config.model_save[:-3] + '_untrain.pt')
         dist.barrier()
         model.load_state_dict(torch.load(config.model_save[:-3] + '_untrain.pt', map_location=device))
     trainer.fit(model, train_data, val_data)
-    if rank == 0:
+    if not config.multi_gpu or rank == 0:
         model = model.to('cpu')
         torch.save(model.state_dict(), config.model_save)
-    cleanup()
+    if config.multi_gpu:
+        cleanup()
 
 
 if __name__ == '__main__':

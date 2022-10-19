@@ -41,6 +41,9 @@ def get_parser(parser=None):
     train_arg.add_argument('--n_workers', type=int, default=1,
                            help='Number of workers for DataLoaders')
 
+    train_arg.add_argument('--multi_gpu', default=False, type=bool,
+                           help='Parallel or not')
+
     ###
     # 不要改该参数，系统会自动分配
     # train_arg.add_argument('--device', default='cuda', help='device id (i.e. 0 or 0,1 or cpu)')
