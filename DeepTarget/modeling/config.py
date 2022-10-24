@@ -17,7 +17,7 @@ def get_parser(parser=None):
                            help="size of attention dim")
     model_arg.add_argument("--num_layers", type=int, default=4,
                            help="Number of Transformer layers")
-    parser.add_argument('--head', type=int, default=8,
+    parser.add_argument('--head', type=int, default=4,
                         help='the number of heads in the encoder/decoder of the transformer model')
     model_arg.add_argument("--hidden", type=int, default=256,
                            help="number of hidden units per layer")
@@ -28,7 +28,7 @@ def get_parser(parser=None):
     train_arg = parser.add_argument_group('Training')
     train_arg.add_argument('--train_epochs', type=int, default=100,
                            help='Number of epochs for model training')
-    train_arg.add_argument('--n_batch', type=int, default=16,
+    train_arg.add_argument('--n_batch', type=int, default=32,
                            help='Size of batch')
     train_arg.add_argument('--lr', type=float, default=1e-4,
                            help='Learning rate')
@@ -41,8 +41,11 @@ def get_parser(parser=None):
     train_arg.add_argument('--n_workers', type=int, default=1,
                            help='Number of workers for DataLoaders')
 
-    train_arg.add_argument('--multi_gpu', default=False, type=bool,
+    train_arg.add_argument('--multi_gpu', default=True, type=bool,
                            help='Parallel or not')
+
+    train_arg.add_argument('--load_pretrain', default=False, type=bool,
+                           help='load_pretrain model or not')
 
     ###
     # 不要改该参数，系统会自动分配

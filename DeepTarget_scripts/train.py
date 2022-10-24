@@ -38,12 +38,16 @@ def main(model, config):
         rank = config.rank
         config.lr *= config.world_size  # 学习率要根据并行GPU的数量进行倍增
 
-    if config.config_save is not None:
-        torch.save(config, config.config_save)
+    if config.config_save is not None and (not config.multi_gpu or rank == 0):
+        if not config.multi_gpu:
+            torch.save(config, config.config_save)
+        else:
+            if rank == 0:
+                torch.save(config, config.config_save)
 
-    # For CUDNN to work properly
-    if device.type.startswith('cuda'):
-        torch.cuda.set_device(device.index or 0)
+    """# For CUDNN to work properly
+        if device.type.startswith('cuda'):
+            torch.cuda.set_device(device.index or 0)"""
     if config.train_load is None:
         train_data_smi, train_data_prot, train_data_mol_idx, train_data_prot_idx = get_dataset('train')
     else:
@@ -63,18 +67,32 @@ def main(model, config):
     else:
         vocab = trainer.get_vocabulary(train_data_smi, train_data_prot)
 
-    if config.vocab_save is not None:
-        torch.save(vocab, config.vocab_save)
+    if config.vocab_save is not None and (not config.multi_gpu or rank == 0):
+        if not config.multi_gpu:
+            torch.save(vocab, config.vocab_save)
+        else:
+            if rank == 0:
+                torch.save(vocab, config.vocab_save)
+
+    """if config.vocab_save is not None and (not config.multi_gpu or rank == 0):
+        torch.save(vocab, config.vocab_save)"""
 
     train_data = [train_data_smi, train_data_prot, train_data_mol_idx, train_data_prot_idx, train_affinity_score]
     val_data = [val_data_smi, val_data_prot, val_data_mol_idx, val_data_prot_idx, val_affinity_score]
 
     model = MODELS.get_model_class(model)(vocab, config).to(device)
-    # 这里注意，一定要指定map_location参数，否则会导致第一块GPU占用更多资源
-    if config.multi_gpu and rank == 0:
+
+    if config.load_pretrain and os.path.exists(config.model_save[:-3] + '_pretrain.pt'):
+        model.load_state_dict(torch.load(config.model_save[:-3] + '_pretrain.pt', map_location=device))
+
+    if not config.multi_gpu or (config.multi_gpu and rank == 0):
+        # 这里注意，一定要指定map_location参数，否则会导致第一块GPU占用更多资源
         torch.save(model.state_dict(), config.model_save[:-3] + '_untrain.pt')
+
+    if config.multi_gpu:
         dist.barrier()
         model.load_state_dict(torch.load(config.model_save[:-3] + '_untrain.pt', map_location=device))
+
     trainer.fit(model, train_data, val_data)
     if not config.multi_gpu or rank == 0:
         model = model.to('cpu')
