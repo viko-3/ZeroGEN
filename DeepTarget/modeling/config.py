@@ -28,7 +28,7 @@ def get_parser(parser=None):
     train_arg = parser.add_argument_group('Training')
     train_arg.add_argument('--train_epochs', type=int, default=100,
                            help='Number of epochs for model training')
-    train_arg.add_argument('--n_batch', type=int, default=32,
+    train_arg.add_argument('--n_batch', type=int, default=16,
                            help='Size of batch')
     train_arg.add_argument('--lr', type=float, default=1e-4,
                            help='Learning rate')
@@ -41,11 +41,20 @@ def get_parser(parser=None):
     train_arg.add_argument('--n_workers', type=int, default=1,
                            help='Number of workers for DataLoaders')
 
-    train_arg.add_argument('--multi_gpu', default=True, type=bool,
+    train_arg.add_argument('--multi_gpu', default=False, type=bool,
                            help='Parallel or not')
 
     train_arg.add_argument('--load_pretrain', default=False, type=bool,
                            help='load_pretrain model or not')
+
+    train_arg.add_argument('--MLM_model', default=False, type=bool,
+                           help='train MLM model or not')
+    train_arg.add_argument('--CL_model', default=False, type=bool,
+                           help='train contrastive learning model or not')
+    train_arg.add_argument('--Matching_model', default=False, type=bool,
+                           help='train matching model or not')
+    train_arg.add_argument('--Language_model', default=True, type=bool,
+                           help='train language model or not')
 
     ###
     # 不要改该参数，系统会自动分配
