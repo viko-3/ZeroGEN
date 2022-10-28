@@ -8,6 +8,7 @@ from DeepTarget.distribute_utils import init_distributed_mode, dist, cleanup
 from DeepTarget.script_utils import add_train_args, read_smiles_csv, set_seed
 from DeepTarget.models_storage import ModelsStorage
 from DeepTarget.dataset import get_dataset
+from DeepTarget.utils import load_pretrain_pth
 
 lg = rdkit.RDLogger.logger()
 lg.setLevel(rdkit.RDLogger.CRITICAL)
@@ -45,9 +46,6 @@ def main(model, config):
             if rank == 0:
                 torch.save(config, config.config_save)
 
-    """# For CUDNN to work properly
-        if device.type.startswith('cuda'):
-            torch.cuda.set_device(device.index or 0)"""
     if config.train_load is None:
         train_data_smi, train_data_prot, train_data_mol_idx, train_data_prot_idx = get_dataset('train')
     else:
@@ -73,9 +71,6 @@ def main(model, config):
         else:
             if rank == 0:
                 torch.save(vocab, config.vocab_save)
-
-    """if config.vocab_save is not None and (not config.multi_gpu or rank == 0):
-        torch.save(vocab, config.vocab_save)"""
 
     train_data = [train_data_smi, train_data_prot, train_data_mol_idx, train_data_prot_idx, train_affinity_score]
     val_data = [val_data_smi, val_data_prot, val_data_mol_idx, val_data_prot_idx, val_affinity_score]

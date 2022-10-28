@@ -13,7 +13,7 @@ def get_parser(parser=None):
                            help="size of word embeddings")
     model_arg.add_argument("--prot_dim", type=int, default=1024,
                            help="size of prot model previous embeddings")
-    model_arg.add_argument("--attn_dim", type=int, default=256,
+    model_arg.add_argument("--attn_dim", type=int, default=128,
                            help="size of attention dim")
     model_arg.add_argument("--num_layers", type=int, default=4,
                            help="Number of Transformer layers")
@@ -28,7 +28,7 @@ def get_parser(parser=None):
     train_arg = parser.add_argument_group('Training')
     train_arg.add_argument('--train_epochs', type=int, default=100,
                            help='Number of epochs for model training')
-    train_arg.add_argument('--n_batch', type=int, default=16,
+    train_arg.add_argument('--n_batch', type=int, default=1024,
                            help='Size of batch')
     train_arg.add_argument('--lr', type=float, default=1e-4,
                            help='Learning rate')
@@ -53,8 +53,15 @@ def get_parser(parser=None):
                            help='train contrastive learning model or not')
     train_arg.add_argument('--Matching_model', default=False, type=bool,
                            help='train matching model or not')
-    train_arg.add_argument('--Language_model', default=True, type=bool,
+    train_arg.add_argument('--Language_model', default=False, type=bool,
                            help='train language model or not')
+
+    train_arg.add_argument('--pretrain_Language_model', default=True, type=bool,
+                           help='pretrain language model or not')
+    train_arg.add_argument('--lm_pretrain_load', default='/home/s2136015/Code/moses/data/pubchem_MolWt_smi.csv', type=str,
+                           help='pretrain language model data')
+    train_arg.add_argument('--lm_pretrain_val_load', default='/home/s2136015/Code/DeepTarget_final/data/zinc_test.csv', type=str,
+                           help='pretrain language model val data')
 
     ###
     # 不要改该参数，系统会自动分配

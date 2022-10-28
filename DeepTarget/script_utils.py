@@ -65,7 +65,7 @@ def add_train_args(parser):
                             help='Where to load the vocab; '
                                  'otherwise it will be evaluated')
     common_arg.add_argument("--max_len",
-                            type=int, default=500,
+                            type=int, default=200,
                             help="Max of length of SMILES")
     return parser
 
@@ -108,6 +108,12 @@ def read_smiles_csv(path):
     affinity_score = df['pKd_pKi_pIC50'].apply(clamp_affinity_score, args=(max_value, min_value))
 
     return mol, prot, mol_idx, prot_idx, affinity_score
+
+
+def read_pretain_lm_csv(path):
+    df = pd.read_csv(path)
+    mol = df['SMILES'].astype(str).tolist()[:10000000]
+    return mol
 
 
 def clamp_affinity_score(x, max_value, min_value):
