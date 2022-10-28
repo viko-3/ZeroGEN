@@ -65,7 +65,7 @@ def add_train_args(parser):
                             help='Where to load the vocab; '
                                  'otherwise it will be evaluated')
     common_arg.add_argument("--max_len",
-                            type=int, default=200,
+                            type=int, default=150,
                             help="Max of length of SMILES")
     return parser
 

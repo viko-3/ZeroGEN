@@ -58,9 +58,9 @@ def get_parser(parser=None):
 
     train_arg.add_argument('--pretrain_Language_model', default=True, type=bool,
                            help='pretrain language model or not')
-    train_arg.add_argument('--lm_pretrain_load', default='/home/s2136015/Code/moses/data/pubchem_MolWt_smi.csv', type=str,
+    train_arg.add_argument('--lm_pretrain_load', default='data/LM_pretrain.csv', type=str,
                            help='pretrain language model data')
-    train_arg.add_argument('--lm_pretrain_val_load', default='/home/s2136015/Code/DeepTarget_final/data/zinc_test.csv', type=str,
+    train_arg.add_argument('--lm_pretrain_val_load', default='data/zinc_test.csv', type=str,
                            help='pretrain language model val data')
 
     ###
