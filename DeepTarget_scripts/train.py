@@ -8,7 +8,7 @@ from DeepTarget.distribute_utils import init_distributed_mode, dist, cleanup
 from DeepTarget.script_utils import add_train_args, read_smiles_csv, set_seed
 from DeepTarget.models_storage import ModelsStorage
 from DeepTarget.dataset import get_dataset
-from DeepTarget.utils import load_pretrain_pth
+from DeepTarget.utils import load_pretrain_lm
 
 lg = rdkit.RDLogger.logger()
 lg.setLevel(rdkit.RDLogger.CRITICAL)
@@ -78,13 +78,13 @@ def main(model, config):
     model = MODELS.get_model_class(model)(vocab, config).to(device)
 
     if config.load_pretrain and os.path.exists(config.model_save[:-3] + '_pretrain.pt'):
-        model.load_state_dict(torch.load(config.model_save[:-3] + '_pretrain.pt', map_location=device))
+        model = load_pretrain_lm(model, config.model_save[:-3] + '_pretrain.pt')
 
     if not config.multi_gpu or (config.multi_gpu and rank == 0):
-        # 这里注意，一定要指定map_location参数，否则会导致第一块GPU占用更多资源
         torch.save(model.state_dict(), config.model_save[:-3] + '_untrain.pt')
 
     if config.multi_gpu:
+        # 这里注意，一定要指定map_location参数，否则会导致第一块GPU占用更多资源
         dist.barrier()
         model.load_state_dict(torch.load(config.model_save[:-3] + '_untrain.pt', map_location=device))
 
