@@ -90,7 +90,7 @@ def add_sample_args(parser):
                             type=str, required=True,
                             help='Where to save the gen molecules')
     common_arg.add_argument("--n_batch",
-                            type=int, default=8,
+                            type=int, default=100,
                             help="Size of batch")
 
     return parser
@@ -98,6 +98,7 @@ def add_sample_args(parser):
 
 def read_smiles_csv(path):
     df = pd.read_csv(path)
+    # df = df.sample(n=100000, random_state=123, replace=True)
     mol = df['SMILES'].astype(str).tolist()
     prot = df['protein_seq'].astype(str).tolist()
     mol_idx = df['mol_idx'].astype(int).tolist()
@@ -124,11 +125,11 @@ def clamp_affinity_score(x, max_value, min_value):
 def read_proteins_csv(path):
     prot = pd.read_csv(path,
                        usecols=['protein_seq'],
-                       squeeze=True).astype(str).tolist()
+                       squeeze=True).astype(str).tolist()[:100]
     prot_idx = pd.read_csv(path,
                            usecols=['prot_idx'],
-                           squeeze=True).astype(int).tolist()
-    return prot, prot_idx
+                           squeeze=True).astype(int).tolist()[:100]
+    return [prot, prot_idx]
 
 
 def set_seed(seed):

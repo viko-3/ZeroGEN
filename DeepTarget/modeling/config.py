@@ -28,7 +28,7 @@ def get_parser(parser=None):
     train_arg = parser.add_argument_group('Training')
     train_arg.add_argument('--train_epochs', type=int, default=100,
                            help='Number of epochs for model training')
-    train_arg.add_argument('--n_batch', type=int, default=16,
+    train_arg.add_argument('--n_batch', type=int, default=32,
                            help='Size of batch')
     train_arg.add_argument('--lr', type=float, default=1e-4,
                            help='Learning rate')
@@ -44,7 +44,7 @@ def get_parser(parser=None):
     train_arg.add_argument('--multi_gpu', default=False, type=bool,
                            help='Parallel or not')
 
-    train_arg.add_argument('--load_pretrain', default=True, type=bool,
+    train_arg.add_argument('--load_pretrain', default=False, type=bool,
                            help='load_pretrain model or not')
 
     train_arg.add_argument('--MLM_model', default=False, type=bool,
@@ -62,6 +62,9 @@ def get_parser(parser=None):
                            help='pretrain language model data')
     train_arg.add_argument('--lm_pretrain_val_load', default='data/zinc_test.csv', type=str,
                            help='pretrain language model val data')
+
+    train_arg.add_argument('--proteins_path', default='data/DeepTarget_all_test.csv', type=str,
+                           help='val_proteins_path')
 
     ###
     # 不要改该参数，系统会自动分配

@@ -37,6 +37,7 @@ def main(model, config):
     if config.multi_gpu:
         init_distributed_mode(args=config)
         rank = config.rank
+        print(rank)
         config.lr *= config.world_size  # 学习率要根据并行GPU的数量进行倍增
 
     if config.config_save is not None and (not config.multi_gpu or rank == 0):
@@ -78,6 +79,7 @@ def main(model, config):
     model = MODELS.get_model_class(model)(vocab, config).to(device)
 
     if config.load_pretrain and os.path.exists(config.model_save[:-3] + '_pretrain.pt'):
+        print('have pretrain')
         model = load_pretrain_lm(model, config.model_save[:-3] + '_pretrain.pt')
 
     if not config.multi_gpu or (config.multi_gpu and rank == 0):
