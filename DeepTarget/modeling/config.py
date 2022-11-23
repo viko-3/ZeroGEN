@@ -47,14 +47,16 @@ def get_parser(parser=None):
     train_arg.add_argument('--load_pretrain', default=False, type=bool,
                            help='load_pretrain model or not')
 
-    train_arg.add_argument('--MLM_model', default=True, type=bool,
+    train_arg.add_argument('--MLM_model', default=False, type=bool,
                            help='train MLM model or not')
-    train_arg.add_argument('--CL_model', default=False, type=bool,
+    train_arg.add_argument('--CL_model', default=True, type=bool,
                            help='train contrastive learning model or not')
-    train_arg.add_argument('--Matching_model', default=False, type=bool,
+    train_arg.add_argument('--Matching_model', default=True, type=bool,
                            help='train matching model or not')
     train_arg.add_argument('--Language_model', default=True, type=bool,
                            help='train language model or not')
+    train_arg.add_argument('--save_attn_matrix', default=False, type=bool,
+                           help='save_attn_matrix')
 
     train_arg.add_argument('--pretrain_Language_model', default=False, type=bool,
                            help='pretrain language model or not')
