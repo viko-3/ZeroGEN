@@ -10,6 +10,9 @@ Deep generative methods can generate new data that resemble a given distribution
 - numpy
 - pandas
 
+### Data
+Due to the size of the file, we will provide the available download path later, or you can contact us directly.
+
 ### Train
 ```python
 CUDA_VISIBLE_DEVICES=0 python -m torch.distributed.launch --nproc_per_node=1 --master_port 9999 --use_env ZeroGEN_scripts/run.py --model ZeroGEN --checkpoint_dir save_checkpoints_file --train_path train_data_file.csv  --test_path test_data_file.csv
