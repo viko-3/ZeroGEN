@@ -12,10 +12,10 @@ Deep generative methods can generate new data that resemble a given distribution
 
 ### Train
 ```python
-python test.py
+CUDA_VISIBLE_DEVICES=0 python -m torch.distributed.launch --nproc_per_node=1 --master_port 9999 --use_env ZeroGEN_scripts/run.py --model ZeroGEN --checkpoint_dir save_checkpoints_file --train_path train_data_file.csv  --test_path test_data_file.csv
 ```
 
 ### Sample
 ```python
-python test.py
+CUDA_VISIBLE_DEVICES=0 python -m torch.distributed.launch --nproc_per_node=1 --master_port 9999 --use_env ZeroGEN_scripts/sample.py --proteins_path proteins_path.csv --checkpoint_path checkpoints.pt --load_config_path checkpoints_config.pt --load_vocab_path checkpoints_vocab.pt --save_attn_matrix False
 ```
