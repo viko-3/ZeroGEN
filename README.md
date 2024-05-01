@@ -11,7 +11,7 @@ Deep generative methods can generate new data that resemble a given distribution
 - pandas
 
 ### Data
-Due to the size of the file, we will provide the available download path later, or you can contact us directly.
+You can download the data by [here](https://www.dropbox.com/scl/fi/s0hozduud6m43s9mp84mm/data.zip?rlkey=cjx3s9yqyuhu0u8x4qoatxqbz&st=nga9gsw4&dl=0).
 
 ### Train
 ```python
